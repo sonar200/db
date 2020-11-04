@@ -2,7 +2,7 @@
     "name": "sonar200/db",
     "description": "",
     "type": "library",
-    "keywords": ["php", "var_dump", "dump"],
+    "keywords": ["php", "pdo"],
     "homepage": "https://github.com/sonar200/db",
     "license": "MIT",
     "version": "v0.0.1",
