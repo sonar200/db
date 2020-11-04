@@ -1,5 +1,5 @@
 {
-    "name": "sonar200/router",
+    "name": "sonar200/db",
     "description": "",
     "type": "library",
     "keywords": ["php", "var_dump", "dump"],
