@@ -163,7 +163,7 @@ abstract class ADB
     {
         $class = get_called_class();
 
-        if (!empty(self::$instances)) {
+        if (empty(self::$instances)) {
             self::$instances = new $class;
         }
         return self::$instances;
