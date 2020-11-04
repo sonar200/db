@@ -1,0 +1,26 @@
+{
+    "name": "sonar200/router",
+    "description": "",
+    "type": "library",
+    "keywords": ["php", "var_dump", "dump"],
+    "homepage": "https://github.com/sonar200/db",
+    "license": "MIT",
+    "version": "v0.0.1",
+    "authors": [
+        {
+            "name": "Ivan Ivanov",
+            "email": "ivan@sonar200.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "config": {
+        "bin-dir": "vendor/bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sonar200\\DB\\": "src/"
+        }
+    }
+}
