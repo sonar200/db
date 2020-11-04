@@ -1,6 +1,6 @@
 {
     "name": "sonar200/db",
-    "description": "",
+    "description": "db pdo",
     "type": "library",
     "keywords": ["php", "pdo"],
     "homepage": "https://github.com/sonar200/db",
