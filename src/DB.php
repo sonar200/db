@@ -6,12 +6,7 @@ namespace Sonar200\DB;
 /**
  * Class DB
  *
- * @package Core\Base
- *
- * @todo    Добавить методы:
- *       insert - добавление записи
- *       update - обновление записи
- *       delete - удаление записи
+ * @package Sonar200\DB
  *
  * @method static DB getInstance()
  */
@@ -28,10 +23,6 @@ class DB extends ADB
      * @param bool        $single Параметры выборки
      *
      * @return array|false
-     * @todo проработать возможность сборки сложных условий с join
-     *
-     * @todo $where Доработать сборку условий выборки по параметрам
-     *              Предусмотреть сборку условий для блоков AND, OR, BETWEEN, IN и т.д.
      *
      */
     public function select(string $table, array $select = [], array $where = [], string $class = null, bool $single = false)
@@ -49,6 +40,12 @@ class DB extends ADB
         return $single && !empty($result) ? $result[0] : $result;
     }
 
+    /**
+     * @param string $table
+     * @param array  $data
+     *
+     * @return array|bool
+     */
     public function insert(string $table, array $data)
     {
         $insertData = $this->generateInsertData($data);
@@ -57,7 +54,14 @@ class DB extends ADB
         return $this->query($query, $insertData['params'], false);
     }
 
-    public function update(string $table, array $update, array $where)
+    /**
+     * @param string $table
+     * @param array  $update
+     * @param array  $where
+     *
+     * @return bool
+     */
+    public function update(string $table, array $update, array $where): bool
     {
         $setSql = [];
         $whereSql = [];
@@ -70,27 +74,24 @@ class DB extends ADB
         $setString = implode(', ', $setSql);
         $whereString = implode(' AND ', $whereSql);
         $sql = sprintf("UPDATE $table SET %s WHERE %s", $setString, $whereString);
-        $this->query($sql);
-        //        try {
-        //            foreach ($update as $key => $value) {
-        //                $this->bind(":$key", $value);
-        //            }
-        //            foreach ($where as $key => $value) {
-        //                $this->bind(":$key", $value);
-        //            }
-        //
-        //            return $this->execute();
-        //
-        //        } catch (Exception $e) {
-        //            $this->error = $e->getMessage();
-        //            $this->errorCode = $e->getCode();
-        //            return false;
-        //        }
+        return $this->query($sql);
     }
 
-    public function delete(string $table, array $where)
+    /**
+     * Удаление записей
+     *
+     * @param string $table
+     * @param array  $where
+     *
+     * @return bool
+     */
+    public function delete(string $table, array $where) : bool
     {
+        $wherePrepare = $this->getWhereString($table, $where);
 
+        $query = "DELETE FROM {$table} {$wherePrepare['string']}";
+
+        return $this->query($query, $wherePrepare['params']);
     }
 
     /**
@@ -101,7 +102,7 @@ class DB extends ADB
      *
      * @return string
      */
-    protected function getSelectString(string $table, array $select)
+    protected function getSelectString(string $table, array $select): string
     {
         $selectString = '*';
         if (!empty($select)) {
@@ -186,7 +187,7 @@ class DB extends ADB
     }
 
 
-    protected function generateInsertData(array $data)
+    protected function generateInsertData(array $data): array
     {
         $out = ['keys'   => '',
                 'values' => '',

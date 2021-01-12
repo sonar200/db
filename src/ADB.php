@@ -6,33 +6,45 @@ use PDO;
 use PDOException;
 use PDOStatement;
 
+/**
+ * Class ADB
+ *
+ * @package Sonar200\DB
+ */
 abstract class ADB
 {
     /** @var mixed */
     protected static $instances = null;
 
-    protected string $host;
-    protected string $db;
-    protected string $username;
-    protected string $password;
+    /** @var string */
+    protected $host;
+
+    /** @var string */
+    protected $db;
+
+    /** @var string */
+    protected $username;
+
+    /** @var string */
+    protected $password;
 
     /** @var PDO|null */
-    protected ?PDO $pdo = null;
+    protected $pdo = null;
 
     /** @var PDOStatement */
-    protected PDOStatement $stmt;
+    protected $stmt;
 
     /** @var array|null */
-    protected ?array $error;
+    protected $error;
 
     /** @var int|null */
-    protected ?int $errorCode;
+    protected $errorCode;
 
     /** @var string|null */
-    protected ?string $connectError;
+    protected $connectError;
 
     /** @var string|null */
-    protected ?string $connectCode;
+    protected $connectCode;
 
     public function setConfig(string $host, string $db, string $username, string $password)
     {
@@ -89,7 +101,7 @@ abstract class ADB
         return false;
     }
 
-    protected function execute(array $bind = [])
+    protected function execute(array $bind = []): bool
     {
         return empty($bind) ? $this->stmt->execute() : $this->stmt->execute($bind);
     }
